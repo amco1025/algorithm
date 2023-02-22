@@ -1,19 +1,29 @@
-def dfs(node):
-    left_string = ''
-    mid_string = node[0]
-    right_string = ''
-    if len(node) >= 2:
-        left_string = dfs(S[int(node[1]) - 1])
-    if len(node) >= 3:
-        right_string = dfs(S[int(node[2]) - 1])
- 
-    return left_string + mid_string + right_string
- 
- 
-for t in range(10):
+def inorder(t):
+    if t:
+        inorder(L[t])
+        ans.append(a[t-1])
+        inorder(R[t])
+
+
+T = 10
+for tc in range(1, T+1):
     N = int(input())
-    S = []
+    a = []
+    L = [0] * (N+1)
+    R = [0] * (N+1)
+    ans = []
     for _ in range(N):
-        S.append(list(map(str, input().split()))[1:])
- 
-    print("#{0} {1}".format(t + 1, dfs(S[0])))
+        li = list(map(str, input().split()))
+        if len(li) == 2:
+            a.append(li[1])
+        elif len(li) == 3:
+            a.append(li[1])
+            L[int(li[0])] = int(li[2])
+        elif len(li) == 4:
+            a.append(li[1])
+            L[int(li[0])] = int(li[2])
+            R[int(li[0])] = int(li[3])
+
+
+    inorder(1)
+    print(f'#{tc}', "".join(ans))
