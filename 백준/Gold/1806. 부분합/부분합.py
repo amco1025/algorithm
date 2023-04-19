@@ -18,8 +18,8 @@ while True:
     elif ei == N:
         break
 
-    # elif ans == 1:
-    #     break
+    elif ans == 1:
+        break
 
     else:
         sm += li[ei]
