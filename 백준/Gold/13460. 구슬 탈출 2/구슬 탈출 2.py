@@ -3,8 +3,11 @@ import sys
 
 input = sys.stdin.readline  # 빠른 입출력 위한 코드
 
+# 보드의 가로와 세로 크기 입력
 n, m = map(int, input().split())
 graph = []
+# 주어진 보드 입력
+# 처음 빨간 구슬의 위치와 파란 구슬의 위치를 저장
 for i in range(n):
     graph.append(list(input()))
     for j in range(m):
@@ -17,36 +20,48 @@ for i in range(n):
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-
+# 처음 빨간 구슬과 파란 구슬를 인수로 하여 bfs 함수 진행
 def bfs(rx, ry, bx, by):
+    # q에 deque 선언
     q = deque()
+    # q에 빨간 구슬과 파란 구슬의 위치 입력하기
     q.append((rx, ry, bx, by))
-    visited = []  # 방문여부를 판단하기 위한 리스트
+    # 방문여부를 판단하기 위한 리스트
+    visited = []
+    # 방문한 곳인지를 확인하기 위하여 현재 빨간 구슬과 파란 구슬의 위치 저장하기
     visited.append((rx, ry, bx, by))
+    # 움직인 횟수
     count = 0
+    # q가 있는 동안 반복문 진행
     while q:
+        # q의 길이만큼 반복문 진행
         for _ in range(len(q)):
+            # q에 있는 빨간 구슬과 파란 구슬의 위치를 rx,ry,bx,by에 저장
             rx, ry, bx, by = q.popleft()
-            if count > 10:  # 움직인 횟수가 10회 초과면 -1 출력
+            # 움직인 횟수가 10회 초과면 -1 출력
+            if count > 10:
                 print(-1)
                 return
-            if graph[rx][ry] == 'O':  # 현재 빨간 구슬의 위치가 구멍이라면 count출력
+            # 현재 빨간 구슬의 위치가 구멍이라면 count출력
+            if graph[rx][ry] == 'O':
                 print(count)
                 return
-
+            # 옮길 빨간 구슬의 위치를 저장하기 위해 nrx,nry 만들기
             for i in range(4):  # 4방향 탐색
-
                 nrx, nry = rx, ry
-                while True:  # #일 때까지 혹은 구멍일 때까지 움직임
+                # #일 때까지 혹은 구멍일 때까지 움직임
+                while True:
                     nrx += dx[i]
                     nry += dy[i]
-                    if graph[nrx][nry] == '#':  # 벽인 경우 왔던 방향 그대로 한칸 뒤로 이동
+                    # 벽인 경우 왔던 방향 그대로 한칸 뒤로 이동
+                    if graph[nrx][nry] == '#':
                         nrx -= dx[i]
                         nry -= dy[i]
                         break
+                    # 도착한 곳이 구멍이라면 break
                     if graph[nrx][nry] == 'O':
                         break
-
+                # 빨간 구슬과 마찬가지로 파란 구슬도 진행
                 nbx, nby = bx, by
                 while True:  # #일 때까지 혹은 구멍일 때까지 움직임
                     nbx += dx[i]
@@ -57,11 +72,11 @@ def bfs(rx, ry, bx, by):
                         break
                     if graph[nbx][nby] == 'O':
                         break
-
-                if graph[nbx][nby] == 'O':  # 파란구슬이 먼저 구멍에 들어가거나 동시에 들어가면 안됨 따라서 이 경우 무시
+                # 파란구슬이 먼저 구멍에 들어가거나 동시에 들어가면 안됨 따라서 이 경우 무시
+                if graph[nbx][nby] == 'O':
                     continue
-
-                if nrx == nbx and nry == nby:  # 두 구슬의 위치가 같다면
+                # 두 구슬의 위치가 같다면
+                if nrx == nbx and nry == nby:
                     if abs(nrx - rx) + abs(nry - ry) > abs(nbx - bx) + abs(nby - by):  # 더 많이 이동한 구슬이 더 늦게 이동한 구슬이므로 늦게 이동한 구슬 한칸 뒤로 이동
                         nrx -= dx[i]
                         nry -= dy[i]
@@ -74,6 +89,5 @@ def bfs(rx, ry, bx, by):
                     visited.append((nrx, nry, nbx, nby))
         count += 1
     print(-1)  # 10회가 초과하지 않았지만 10회 내에도 구멍에 들어가지 못하는 경우
-
 
 bfs(rx, ry, bx, by)
