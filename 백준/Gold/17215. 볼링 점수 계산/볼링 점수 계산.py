@@ -12,7 +12,7 @@ def bowling_score(s):
 
     score = 0
     frame_idx = 0
-    for frame in range(10):  # 10 프레임만 점수 계산
+    for _ in range(10):  # 10 프레임만 점수 계산
         if rolls[frame_idx] == 10:  # 스트라이크
             score += 10 + rolls[frame_idx + 1] + rolls[frame_idx + 2]
             frame_idx += 1
@@ -25,4 +25,5 @@ def bowling_score(s):
     return score
 
 li = input()
+
 print(bowling_score(li))
